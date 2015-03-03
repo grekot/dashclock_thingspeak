@@ -165,10 +165,10 @@ public class BatteryExtension extends DashClockExtension {
             // Publish the extension data update.
             publishUpdate(new ExtensionData()
                     .visible(true)
-                    .icon(R.drawable.ic_thermometer)
+                    .icon(R.drawable.thermometer_icon_2)
                     .status(temperature+"°")
                     .expandedTitle(temperature+"°C")
-                    .expandedBody(channelName + "\n" + updateDateTime + "\nResonse: " + response)
+                    .expandedBody(channelName + "\n" + updateDateTime)
                     .clickIntent(REFRESH_INTENT));
 
             return response;
