@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<items version="2" >
+
+    <item
+        jar="D:\projekty\Android\dashclock_thingspeak\app\libs\dashclock-api-r1.1.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="9f93454c855e912561225d3e64fbdc5dddd19d49">
+        <dex dex="D:\projekty\Android\dashclock_thingspeak\app\build\intermediates\pre-dexed\debug\dashclock-api-r1.1-7c02b9b82c4133f7db6c82fa7ec6684d6673214c.jar" />
+    </item>
+
+</items>
