@@ -153,7 +153,6 @@ public class BatteryExtension extends DashClockExtension {
                     SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZ");
                     date = dateFormat1.parse(updateDateTime);
 
-                    date.toString();
                 } catch (Exception e) {
                     temperature = "ERR";
                 }
