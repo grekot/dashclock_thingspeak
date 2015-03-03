@@ -38,6 +38,8 @@ import java.io.InputStreamReader;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import  	java.lang.String;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class BatteryExtension extends DashClockExtension {
 
@@ -111,6 +113,7 @@ public class BatteryExtension extends DashClockExtension {
             String temperature = "";
             String updateDateTime = "";
             String channelName = "";
+            Date date = null;
             for (String url : urls) {
                 DefaultHttpClient client = new DefaultHttpClient();
                 HttpGet httpGet = new HttpGet(url);
@@ -147,11 +150,18 @@ public class BatteryExtension extends DashClockExtension {
                     temperature = subObj_feeds.getString("field1");
                     updateDateTime = subObj_feeds.getString("created_at");
 
+                    SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZ");
+                    date = dateFormat1.parse(updateDateTime);
+
+                    date.toString();
                 } catch (Exception e) {
                     temperature = "ERR";
                 }
             }
 
+
+            SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            updateDateTime = dateFormat2.format(date);
 
             // Publish the extension data update.
             publishUpdate(new ExtensionData()
