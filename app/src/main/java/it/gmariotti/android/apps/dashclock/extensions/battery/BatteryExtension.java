@@ -22,8 +22,11 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.BatteryManager;
+import android.preference.EditTextPreference;
 import android.preference.PreferenceManager;
 import android.os.AsyncTask;
+import android.widget.EditText;
+
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.HttpResponse;
@@ -40,6 +43,7 @@ import org.json.JSONObject;
 import  	java.lang.String;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import android.view.View;
 
 public class BatteryExtension extends DashClockExtension {
 
@@ -54,6 +58,7 @@ public class BatteryExtension extends DashClockExtension {
 	public static final String PREF_BATTERY_TEMP = "pref_battery_temp";
 	public static final String PREF_BATTERY_HEALTH = "pref_battery_health";
 	public static final String PREF_BATTERY_REALTIME = "pref_battery_realtime";
+    public static final String PREF_LOGIN = "pref_login";
 
 	
 	// Prefs
@@ -62,6 +67,7 @@ public class BatteryExtension extends DashClockExtension {
 	protected boolean prefVoltage = true;
 	protected boolean prefHealth = true;
 	protected boolean prefRealtime = true;
+    protected String  prefUserLogin = "";
 
 	// Value
 	private int level;
@@ -77,29 +83,31 @@ public class BatteryExtension extends DashClockExtension {
 
 	@Override
 	protected void onInitialize(boolean isReconnect) {
-		super.onInitialize(isReconnect); 
-		if (!isReconnect) {
-			readPreferences();
+		super.onInitialize(isReconnect);
 
-            if (onClickReceiver != null) {
-                try {
-                    unregisterReceiver(onClickReceiver);
-                } catch (Exception e) {
-                }
+        readPreferences();
+
+        if (onClickReceiver != null) {
+            try {
+                unregisterReceiver(onClickReceiver);
+            } catch (Exception e) {
             }
+        }
 
-            IntentFilter intentFilter = new IntentFilter(REFRESH_INTENT_FILTER);
-            onClickReceiver = new OnClickReceiver();
-            registerReceiver(onClickReceiver, intentFilter);
+        IntentFilter intentFilter = new IntentFilter(REFRESH_INTENT_FILTER);
+        onClickReceiver = new OnClickReceiver();
+        registerReceiver(onClickReceiver, intentFilter);
 
 
-            IntentFilter filterScreen=new IntentFilter();
-            filterScreen.addAction(Intent.ACTION_SCREEN_ON);
+        IntentFilter filterScreen=new IntentFilter();
+        filterScreen.addAction(Intent.ACTION_SCREEN_ON);
 
-            getApplicationContext().registerReceiver(mScreenOnReceiver,
-                    filterScreen);
-            //scheduleRefresh(0);
-		}
+        getApplicationContext().registerReceiver(mScreenOnReceiver,
+                filterScreen);
+
+
+
+        //scheduleRefresh(0);
 	}
 
 
@@ -187,7 +195,7 @@ public class BatteryExtension extends DashClockExtension {
 	protected void onUpdateData(int reason) {
 		LOGD(TAG, "onUpdate "+reason);
 		// Read Preferences
-		//readPreferences();
+		readPreferences();
 
         readWebpage();
     }
@@ -200,13 +208,19 @@ public class BatteryExtension extends DashClockExtension {
 	 */
 	private void readPreferences() {
 		// Get preference value.
-		SharedPreferences sp = PreferenceManager
-				.getDefaultSharedPreferences(this);
+		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+
 		prefVoltage = sp.getBoolean(PREF_BATTERY_VOLTAGE, true);
 		prefCharge = sp.getBoolean(PREF_BATTERY_CHARGE, true);
 		prefTemp = sp.getBoolean(PREF_BATTERY_TEMP, true);
 		prefHealth = sp.getBoolean(PREF_BATTERY_HEALTH, true);
 		prefRealtime = sp.getBoolean(PREF_BATTERY_REALTIME, true);
+
+        prefUserLogin = sp.getString(PREF_LOGIN, prefUserLogin);
+
+//        SharedPreferences.Editor editor = sp.edit();
+//        editor.putString(PREF_LOGIN, "ala ma kota");
+//        editor.commit();
 	}
 
 

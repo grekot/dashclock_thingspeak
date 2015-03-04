@@ -27,11 +27,11 @@
             android:title="@string/pref_charge" >
         </CheckBoxPreference>
         <EditTextPreference
-            android:dialogTitle="My preference"
+            android:dialogTitle="User login"
             android:key="pref_login"
-            android:summary="Enter Your Preference"
-            android:title="Edit Text Preference"
-            android:defaultValue="Android Partaker"/>
+            android:summary="Enter Your login"
+            android:title="Edit user login"
+            android:defaultValue="none"/>
         <CheckBoxPreference
             android:defaultValue="true"
             android:key="pref_battery_temp"

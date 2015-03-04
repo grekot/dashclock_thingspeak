@@ -22,7 +22,7 @@ public class BatterySettingsActivity extends BaseSettingsActivity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getActionBar().setIcon(R.drawable.ic_extension_battery);
+        getActionBar().setIcon(R.drawable.ic_thermometer);
     }
 
     @Override
@@ -41,7 +41,7 @@ public class BatterySettingsActivity extends BaseSettingsActivity {
         bindPreferenceSummaryToValue(findPreference(BatteryExtension.PREF_BATTERY_VOLTAGE));
         bindPreferenceSummaryToValue(findPreference(BatteryExtension.PREF_BATTERY_HEALTH));
         bindPreferenceSummaryToValue(findPreference(BatteryExtension.PREF_BATTERY_REALTIME));
-        
+
     }
 	
 	
