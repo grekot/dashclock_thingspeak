@@ -51,14 +51,12 @@
     <string name="celsius">°C</string>
     <string name="mv">mV</string>
     
-    <string name="pref_display">Battery details</string>
-    <string name="pref_update">Update</string>
-    
-    <string name="pref_charge">Charge</string>
-    <string name="pref_chargeSummary">Display information about current power type</string>
-    
-    <string name="pref_temp">Temperature</string>
-    <string name="pref_tempSummary">Display information about temperature</string>
+    <string name="pref_display">Channel details</string>
+
+    <string name="pref_fieldName">Field name</string>
+    <string name="pref_fieldNameSumary">Show field name</string>
+
+
     
     <string name="pref_voltage">Voltage</string>
     <string name="pref_voltageSummary">Display information about voltage</string>

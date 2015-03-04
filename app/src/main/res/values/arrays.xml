@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="chanelFields">
+        <item>Field 1</item>
+        <item>Field 2</item>
+        <item>Field 3</item>
+        <item>Field 4</item>
+        <item>Field 5</item>
+        <item>Field 6</item>
+        <item>Field 7</item>
+        <item>Field 8</item>
+    </string-array>
+    <string-array name="chanelFieldsValues">
+        <item>field1</item>
+        <item>field2</item>
+        <item>field3</item>
+        <item>field4</item>
+        <item>field5</item>
+        <item>field6</item>
+        <item>field7</item>
+        <item>field8</item>
+    </string-array>
+</resources>
