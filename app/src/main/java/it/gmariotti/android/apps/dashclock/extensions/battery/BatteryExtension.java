@@ -52,32 +52,21 @@ public class BatteryExtension extends DashClockExtension {
 
 	private static final String TAG = "BatteryExtension";
 
-	public static final String PREF_BATTERY = "pref_Battery";
-	public static final String PREF_BATTERY_CHARGE = "pref_battery_charge";
-	public static final String PREF_BATTERY_VOLTAGE = "pref_battery_voltage";
-	public static final String PREF_BATTERY_TEMP = "pref_battery_temp";
-	public static final String PREF_BATTERY_HEALTH = "pref_battery_health";
-	public static final String PREF_BATTERY_REALTIME = "pref_battery_realtime";
-    public static final String PREF_LOGIN = "pref_login";
+	public static final String PREF_CHANNEL_ID = "pref_chanel_id";
+    public static final String PREF_FIELD_ID = "pref_field_id";
+    public static final String PREF_FIELD_NAME = "pref_field_name";
+    public static final String PREF_FIELD_DATE = "pref_field_date";
+    public static final String PREF_FIELD_TIME = "pref_field_time";
+
 
 	
 	// Prefs
-	protected boolean prefCharge = true;
-	protected boolean prefTemp = true;
-	protected boolean prefVoltage = true;
-	protected boolean prefHealth = true;
-	protected boolean prefRealtime = true;
-    protected String  prefUserLogin = "";
+    protected String  prefChannelID = "";
+    protected String  prefFieldID = "";
+	protected boolean prefFieldName = true;
+    protected boolean prefFieldDate = true;
+    protected boolean prefFieldTime = true;
 
-	// Value
-	private int level;
-	private String charging;
-	private String charge;
-	private int voltage;
-	private int temperature;
-	private String umTemp;
-	private String umVoltage = "";
-	private String health;
 
     private OnClickReceiver onClickReceiver;
 
@@ -118,10 +107,16 @@ public class BatteryExtension extends DashClockExtension {
 
             Intent powerUsageIntent = new Intent(Intent.ACTION_POWER_USAGE_SUMMARY);
             String response = "";
-            String temperature = "";
             String updateDateTime = "";
-            String channelName = "";
-            Date date = null;
+
+            String fieldValue = null;
+            String updateDate = null;
+            String updateTime = null;
+            String fieldName = null;
+
+            Date dateUpdateDateTime = null;
+
+
             for (String url : urls) {
                 DefaultHttpClient client = new DefaultHttpClient();
                 HttpGet httpGet = new HttpGet(url);
@@ -130,10 +125,9 @@ public class BatteryExtension extends DashClockExtension {
                     HttpResponse execute = client.execute(httpGet);
                     HttpEntity entity = execute.getEntity();
 
-                    if(entity != null){
+                    if (entity != null) {
                         response = EntityUtils.toString(entity);
-                    }
-                    else{
+                    } else {
                     }
 
                 } catch (Exception e) {
@@ -143,41 +137,69 @@ public class BatteryExtension extends DashClockExtension {
             }
 
 
-            if(response.length() > 0){
+            if (response.length() > 0) {
                 try {
                     JSONObject jObj = new JSONObject(response);
 
                     JSONObject subObj_chanel = jObj.getJSONObject("channel");
 
-                    channelName = subObj_chanel.getString("field1");
+                    fieldName = subObj_chanel.getString("field1");
 
                     JSONArray jArr = jObj.getJSONArray("feeds");
 
-                    JSONObject subObj_feeds = jArr.getJSONObject(jArr.length()-1);
+                    JSONObject subObj_feeds = jArr.getJSONObject(jArr.length() - 1);
 
-                    temperature = subObj_feeds.getString("field1");
+                    fieldValue = subObj_feeds.getString("field1");
+
+
                     updateDateTime = subObj_feeds.getString("created_at");
 
                     SimpleDateFormat dateFormat1 = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssZZZZ");
-                    date = dateFormat1.parse(updateDateTime);
+                    dateUpdateDateTime = dateFormat1.parse(updateDateTime);
 
                 } catch (Exception e) {
                     temperature = "ERR";
                 }
+
+
+
+                SimpleDateFormat dateFormatterDate = new SimpleDateFormat("yyyy-MM-dd");
+                SimpleDateFormat dateFormatterTime = new SimpleDateFormat("HH:mm:ss");
+
+                updateDate = dateFormatterDate.format(dateUpdateDateTime);
+                updateTime = dateFormatterTime.format(dateUpdateDateTime);
+
+
+                String and = "";
+                StringBuffer sb = new StringBuffer();
+                if (prefFieldName && fieldName != null) {
+                    sb.append(fieldName);
+                    and = "\n";
+                }
+                if (prefFieldDate && updateDate != null) {
+                    sb.append(and);
+                    sb.append(updateDate);
+                    and = "\n";
+
+                    if (prefFieldTime)
+                        and = " ";
+                }
+                if (prefFieldTime && updateTime != null) {
+                    sb.append(and);
+                    sb.append(updateTime);
+                    and = "\n";
+                }
+
+                // Publish the extension data update.
+                publishUpdate(new ExtensionData()
+                        .visible(true)
+                        .icon(R.drawable.thermometer_icon_2)
+                        .status(fieldValue + "°")
+                        .expandedTitle(fieldValue + "°C")
+                        .expandedBody(sb.toString())
+                        .clickIntent(REFRESH_INTENT));
+
             }
-
-
-            SimpleDateFormat dateFormat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            updateDateTime = dateFormat2.format(date);
-
-            // Publish the extension data update.
-            publishUpdate(new ExtensionData()
-                    .visible(true)
-                    .icon(R.drawable.thermometer_icon_2)
-                    .status(temperature+"°")
-                    .expandedTitle(temperature+"°C")
-                    .expandedBody(channelName + "\n" + updateDateTime)
-                    .clickIntent(REFRESH_INTENT));
 
             return response;
         }
@@ -187,14 +209,13 @@ public class BatteryExtension extends DashClockExtension {
     {
         DownloadChanelData task = new DownloadChanelData();
         //task.execute(new String[] { "https://thingspeak.com/channels/27592/feeds/last.json?timezone=Europe/Warsaw" });
-        task.execute(new String[] { "https://api.thingspeak.com/channels/27592/feeds.json?results=1&timezone=Europe/Warsaw" });
+        task.execute(new String[]{"https://api.thingspeak.com/channels/27592/feeds.json?results=1&timezone=Europe/Warsaw"});
 
     }
 
 	@Override
 	protected void onUpdateData(int reason) {
-		LOGD(TAG, "onUpdate "+reason);
-		// Read Preferences
+
 		readPreferences();
 
         readWebpage();
@@ -210,13 +231,14 @@ public class BatteryExtension extends DashClockExtension {
 		// Get preference value.
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
 
-		prefVoltage = sp.getBoolean(PREF_BATTERY_VOLTAGE, true);
-		prefCharge = sp.getBoolean(PREF_BATTERY_CHARGE, true);
-		prefTemp = sp.getBoolean(PREF_BATTERY_TEMP, true);
-		prefHealth = sp.getBoolean(PREF_BATTERY_HEALTH, true);
-		prefRealtime = sp.getBoolean(PREF_BATTERY_REALTIME, true);
+        prefChannelID = sp.getString(PREF_CHANNEL_ID, prefChannelID);
+        prefFieldID = sp.getString(PREF_FIELD_ID, prefFieldID);
 
-        prefUserLogin = sp.getString(PREF_LOGIN, prefUserLogin);
+		prefFieldName = sp.getBoolean(PREF_FIELD_NAME, true);
+        prefFieldDate = sp.getBoolean(PREF_FIELD_DATE, true);
+        prefFieldTime = sp.getBoolean(PREF_FIELD_TIME, true);
+
+
 
 //        SharedPreferences.Editor editor = sp.edit();
 //        editor.putString(PREF_LOGIN, "ala ma kota");

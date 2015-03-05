@@ -45,6 +45,20 @@
             android:title="@string/pref_fieldName" >
         </CheckBoxPreference>
 
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_field_date"
+            android:summary="@string/pref_fieldDateSumary"
+            android:title="@string/pref_fieldDate" >
+        </CheckBoxPreference>
+
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="pref_field_time"
+            android:summary="@string/pref_fieldTimeSumary"
+            android:title="@string/pref_fieldTime" >
+        </CheckBoxPreference>
+
     </PreferenceCategory>
 
 </PreferenceScreen>
