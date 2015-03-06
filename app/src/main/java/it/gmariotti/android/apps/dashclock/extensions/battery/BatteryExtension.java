@@ -158,7 +158,7 @@ public class BatteryExtension extends DashClockExtension {
                     dateUpdateDateTime = dateFormat1.parse(updateDateTime);
 
                 } catch (Exception e) {
-                    temperature = "ERR";
+                    fieldValue = "ERR";
                 }
 
 
@@ -231,7 +231,7 @@ public class BatteryExtension extends DashClockExtension {
 		// Get preference value.
 		SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
 
-        prefChannelID = sp.getString(PREF_CHANNEL_ID, prefChannelID);
+        //prefChannelID = sp.getString(PREF_CHANNEL_ID, prefChannelID);
         prefFieldID = sp.getString(PREF_FIELD_ID, prefFieldID);
 
 		prefFieldName = sp.getBoolean(PREF_FIELD_NAME, true);

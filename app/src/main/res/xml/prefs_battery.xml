@@ -20,14 +20,14 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <PreferenceCategory android:title="@string/pref_display" >
-        <EditTextPreference
-            android:dialogTitle="Chanel ID"
-            android:key="pref_chanel_id"
-            android:summary="Enter chanel ID"
-            android:title="Edit chanel ID"
-            android:defaultValue="0000"
-            android:inputType="number"
-        />
+        <!--<EditTextPreference-->
+            <!--android:dialogTitle="Chanel ID"-->
+            <!--android:key="pref_chanel_id"-->
+            <!--android:summary="Enter chanel ID"-->
+            <!--android:title="Edit chanel ID"-->
+            <!--android:defaultValue="0000"-->
+            <!--android:inputType="number"-->
+        <!--/>-->
 
         <ListPreference
             android:title="Active field"
@@ -36,7 +36,10 @@
             android:summary="Selec Day of the Week"
             android:entries="@array/chanelFields"
             android:entryValues="@array/chanelFieldsValues"
-        />
+            android:negativeButtonText="@null"
+            android:positiveButtonText="@null"
+            android:defaultValue="field1">
+        </ListPreference>
 
         <CheckBoxPreference
             android:defaultValue="true"
@@ -46,7 +49,7 @@
         </CheckBoxPreference>
 
         <CheckBoxPreference
-            android:defaultValue="true"
+            android:defaultValue="false"
             android:key="pref_field_date"
             android:summary="@string/pref_fieldDateSumary"
             android:title="@string/pref_fieldDate" >

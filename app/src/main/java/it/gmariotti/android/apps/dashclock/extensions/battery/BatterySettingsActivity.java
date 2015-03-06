@@ -36,11 +36,11 @@ public class BatterySettingsActivity extends BaseSettingsActivity {
         // Bind the summaries of EditText/List/Dialog/Ringtone preferences to
         // their values. When their values change, their summaries are updated
         // to reflect the new value, per the Android Design guidelines.
-        bindPreferenceSummaryToValue(findPreference(BatteryExtension.PREF_BATTERY_CHARGE));
-        bindPreferenceSummaryToValue(findPreference(BatteryExtension.PREF_BATTERY_TEMP));
-        bindPreferenceSummaryToValue(findPreference(BatteryExtension.PREF_BATTERY_VOLTAGE));
-        bindPreferenceSummaryToValue(findPreference(BatteryExtension.PREF_BATTERY_HEALTH));
-        bindPreferenceSummaryToValue(findPreference(BatteryExtension.PREF_BATTERY_REALTIME));
+//        bindPreferenceSummaryToValue(findPreference(BatteryExtension.PREF_CHANNEL_ID));
+        bindPreferenceSummaryToValue(findPreference(BatteryExtension.PREF_FIELD_ID));
+        bindPreferenceSummaryToValue(findPreference(BatteryExtension.PREF_FIELD_DATE));
+        bindPreferenceSummaryToValue(findPreference(BatteryExtension.PREF_FIELD_NAME));
+        bindPreferenceSummaryToValue(findPreference(BatteryExtension.PREF_FIELD_TIME));
 
     }
 	
